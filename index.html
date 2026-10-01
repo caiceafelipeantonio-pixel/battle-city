@@ -783,8 +783,10 @@ function render() {
   ctx.fillStyle = '#0a0a0a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 地图
-  for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) drawTile(r, c);
+  // 地图（关卡未加载时跳过，避免空地图报错）
+  if (G.map.length) {
+    for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) drawTile(r, c);
+  }
 
   // 道具
   for (const pu of G.powerups) drawPowerup(pu);
@@ -906,11 +908,11 @@ function gameOver() {
   showOverlay('游戏结束', '基地被摧毁或生命耗尽', '重新开始');
 }
 
-function showOverlay(title, sub, btn) {
+function showOverlay(title, sub, btn, action) {
   overlay.classList.remove('hidden');
   overlay.innerHTML =
     `<h2>${title}</h2><div class="sub">${sub}</div><button class="btn">${btn}</button>`;
-  overlay.querySelector('button').onclick = startGame;
+  overlay.querySelector('button').onclick = action || startGame;
 }
 
 function updateHUD() {
@@ -943,7 +945,7 @@ window.addEventListener('keydown', (e) => {
   G.keys[c] = true;
   AudioSys.init();
 
-  if (c === 'KeyP' && G.state === 'playing') { G.state = 'paused'; showOverlay('暂停', '按 P 键继续', '继续'); }
+  if (c === 'KeyP' && G.state === 'playing') { G.state = 'paused'; showOverlay('暂停', '按 P 键继续', '继续', () => { G.state = 'playing'; overlay.classList.add('hidden'); }); }
   else if (c === 'KeyP' && G.state === 'paused') { G.state = 'playing'; overlay.classList.add('hidden'); }
   else if (c === 'KeyM') toggleMute();
   else if (c === 'Enter') {
