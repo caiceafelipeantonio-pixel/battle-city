@@ -1,8 +1,8 @@
 # 坦克大战 · Battle City
 
-一个纯 HTML / CSS / JavaScript 实现的经典《坦克大战》（Battle City）网页游戏，无需任何依赖，双击即可游玩，也可一键部署到 GitHub Pages。
+> 🎮 **在线游玩：[caiceafelipeantonio-pixel.github.io/battle-city](https://caiceafelipeantonio-pixel.github.io/battle-city/)**
 
-![游戏预览](preview.png)
+一个纯 HTML / CSS / JavaScript 实现的经典《坦克大战》（Battle City）网页游戏，无需任何依赖，双击即可游玩，也可一键部署到 GitHub Pages。
 
 ## 玩法
 
