@@ -354,6 +354,7 @@ function randInt(a, b) { return Math.floor(rand(a, b + 1)); }
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
 function tileAt(px, py) {
+  if (!isFinite(px) || !isFinite(py)) return -1; // 非法坐标视为墙
   const c = Math.floor(px / TILE), r = Math.floor(py / TILE);
   if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return -1; // 越界视为墙
   return G.map[r][c];
@@ -496,7 +497,7 @@ function makeEnemy(x, y, type) {
   return Object.assign({
     x, y, dir: 2, size: TANK_SIZE, type: t, isPlayer: false, alive: true,
     cd: 0, moveTimer: 0, shootTimer: rand(0.5, 1.5), hp: def.hp, maxHp: def.hp,
-    flash: 0, body: def.body, track: def.track, turret: def.turret,
+    speed: def.speed, flash: 0, body: def.body, track: def.track, turret: def.turret,
   });
 }
 
@@ -602,7 +603,7 @@ function killTank(tank) {
     // 掉道具概率
     if (Math.random() < 0.18) {
       G.powerups.push({
-        x: tank.x, y: tank.y, size: 24, type: randInt(0,2),
+        x: tank.x, y: tank.y, size: 24, type: randInt(0,2), flash: 0,
       });
     }
     updateHUD();
